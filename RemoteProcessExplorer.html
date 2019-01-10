@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <title>Process Explorer</title>
+  </head>
+  <body>
+
+    <div class="container">
+    <br/>
+    <center><h2>Process Explorer</h2></center>
+    <br/>
+    <table class="table table-hover table-sm sortable" id="maintable">
+    <thead class="thead-light">
+      <tr>
+      <th>#</th>
+      <th>Process Name</th>
+      <th>User Name</th>
+      <th>Session ID</th>
+      <th>Process ID</th>
+      <th>kill</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script>
+    $.get("/RemoteProcessExplorer/user", function(user){
+        var user = $.parseJSON(user);
+        $.get("/RemoteProcessExplorer/list", function(data){
+            var data = $.parseJSON(data);
+            var tbody = $("#maintable > tbody");
+            for (var i = 0; i < data.length; i++) {
+                var row = $(document.createElement("tr"));
+                var col = $(document.createElement("td"));
+                col.text(i);
+                row.append(col);
+                var col = $(document.createElement("td"));
+                col.text(data[i][0]);
+                row.append(col);
+                var col = $(document.createElement("td"));
+                col.text(user[data[i][1]]);
+                row.append(col);
+                var col = $(document.createElement("td"));
+                col.text(data[i][1]);
+                row.append(col);
+                var col = $(document.createElement("td"));
+                col.text(data[i][2]);
+                row.append(col);
+                var col = $(document.createElement("td"));
+                var btn = $(document.createElement("btn"));
+                btn.addClass("btn btn-warning btn-sm");
+                btn.attr("onclick", "killProcess(this, " + data[i][2] + ")");
+                btn.text("×");
+                col.append(btn);
+                row.append(col);
+                tbody.append(row);
+            }
+        });
+    });
+    function killProcess(elem, pid) {
+        elem.className = "";
+        elem.removeAttribute("onclick");
+        $.get("/RemoteProcessExplorer/kill/" + pid);
+    }
+    </script>
+  </body>
+</html>

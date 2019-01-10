@@ -1,5 +1,5 @@
 # RemoteProcessExplorer
-Python web interface for remote processes management for Windows
+Python web interface for remote processes management ( Windows only )
 
 Put them into same folder and run
 

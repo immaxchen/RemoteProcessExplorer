@@ -13,8 +13,7 @@ def list_user():
     data = {}
     for session in win32ts.WTSEnumerateSessions(win32ts.WTS_CURRENT_SERVER_HANDLE):
         sid = session['SessionId']
-        username = win32ts.WTSQuerySessionInformation(None, sid, win32ts.WTSUserName)
-        data[sid] = username
+        data[sid] = win32ts.WTSQuerySessionInformation(None, sid, win32ts.WTSUserName)
     return json.dump(data)
 
 @app.route('/RemoteProcessExplorer/list')
@@ -34,4 +33,3 @@ def kill_process(pid):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
-

@@ -67,7 +67,7 @@
         });
     });
     function killProcess(elem, pid) {
-        elem.className = "";
+        elem.className = "btn btn-secondary btn-sm";
         elem.removeAttribute("onclick");
         $.get("/RemoteProcessExplorer/kill/" + pid);
     }

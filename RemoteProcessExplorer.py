@@ -1,5 +1,5 @@
 from flask import Flask, request, send_from_directory
-import pythoncom, win32ts, wmi, json
+import pythoncom, win32ts, wmi, json, urllib, subprocess
 
 app = Flask(__name__)
 
@@ -29,6 +29,13 @@ def kill_process(pid):
     pythoncom.CoInitialize()
     process = wmi.WMI().Win32_Process(ProcessId=int(pid))[0]
     process.Terminate()
+    return "0"
+
+@app.route('/RemoteProcessExplorer/open/<cmd>')
+def open_process(cmd):
+    pythoncom.CoInitialize()
+    full_cmd = urllib.parse.unquote_plus(cmd)
+    process = subprocess.Popen(full_cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
     return "0"
 
 if __name__ == '__main__':

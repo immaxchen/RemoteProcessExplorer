@@ -11,7 +11,10 @@
 
     <div class="container">
     <br/>
-    <center><h2>Process Explorer</h2></center>
+    <center>
+      <h2 class="d-inline-block">Process Explorer</h2>
+      <button class="btn btn-success btn-sm" style="margin-bottom:15px;margin-left:50px;" onclick="openProcess()">+</button>
+    </center>
     <br/>
     <table class="table table-hover table-sm sortable" id="maintable">
     <thead class="thead-light">
@@ -70,6 +73,10 @@
         elem.className = "btn btn-secondary btn-sm";
         elem.removeAttribute("onclick");
         $.get("/RemoteProcessExplorer/kill/" + pid);
+    }
+    function openProcess() {
+        var cmd = prompt("Please enter the full command to run:");
+        if (cmd != null && cmd != "") $.get("/RemoteProcessExplorer/open/" + encodeURIComponent(cmd));
     }
     </script>
   </body>
